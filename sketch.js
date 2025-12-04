@@ -535,14 +535,14 @@ pop()
   }
   pop()
   push()
-if(dist(mouseX,mouseY,width,height)<=400){
+if(dist(mouseX,mouseY,width,height)<=width/3){
  if(door2is===false) {
   door2is=true
 door2.play()
 door2.setVolume(0.08)
  }
 }
-else if(dist(mouseX,mouseY,width,height)>400){
+else if(dist(mouseX,mouseY,width,height)>width/3){
   door2.stop()
   door2is=false
 }
@@ -1184,7 +1184,7 @@ else if(trigger===6){
 
   }
 
-  if(dist(mouseX,mouseY,width,height)<=400){
+  if(dist(mouseX,mouseY,width,height)<=width/3){
     trigger=3
   }
 
