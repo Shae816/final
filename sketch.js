@@ -519,7 +519,7 @@ pop()
 push()
 fill(255,150)
 textSize(16)
-text('click and leave your letter...',width/15,height/15)
+text('click and type to leave your letter...',width/15,height/15)
 pop()
 
 
