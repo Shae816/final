@@ -72,6 +72,13 @@ let b=255
 let door2
 let door2is=false
 let san
+let emoji=[]
+let textt=['so cool!!','Wow!','💕🥹🥰','🙈lol','Really?','Tell me more..','Interesting']
+let circle1=false
+let circle2=false
+let circle3=false
+let circle4=false
+let cha
 
 
 let zimu = [
@@ -92,6 +99,7 @@ function preload(){
   let road=loadImage(filename)
   roads.push(road)
 }
+cha=loadImage('assets/cha 5.png')
 san=loadImage('assets/san.PNG')
 door2=loadSound('assets/door2.mp3')
 cake=loadImage('assets/cake.jpg')
@@ -136,9 +144,9 @@ function setup(){
   canvas.id("p5-canvas");
   canvas.parent("p5-canvas-container");
 ball4=new Ball4(width/4,height/3)
-ball5=new Ball4(width/2,height/6)
-ball6=new Ball4(4*width/7,5*height/6)
-ball7=new Ball4(4*width/5,height/2)
+ball5=new Ball5(width/2,height/6)
+ball6=new Ball6(4*width/7,5*height/6)
+ball7=new Ball7(4*width/5,height/2)
 abstract.filter(BLUR,3)
 stars.filter(BLUR,6)
 moon.filter(BLUR,6)
@@ -186,11 +194,25 @@ let rate=0.7
 let moon
 let dog
 let cake
+let finaltext=0
+let spedd=1
+let starttext=150
 function draw() {
   
   background(0)
 
-
+if(trigger===0){
+  push()
+  noStroke()
+  starttext+=spedd
+  if(starttext>200||starttext<100){
+    spedd=-spedd
+  }
+  fill(255,starttext)
+  textSize(30)
+  text('stepping into here, to explore the boundaries of memory',width/5,height/2)
+  pop()
+}
   
   if(sound===true){
   volume+=0.005
@@ -200,6 +222,21 @@ function draw() {
      rainSound.setVolume(volume)
     }
 if(trigger===3){
+  if(circle1===true&&circle2===true&&circle3===true&&circle4===true){
+    finaltext+=1
+    if(finaltext>200){
+      finaltext=200
+    }
+    push()
+    fill(255,finaltext)
+    noStroke()
+    textSize(20)
+  text('Maybe you can empathize, maybe you cannot, but I like to think that part of our memories overlaps',width/6,height/2-45)
+text('                       This chapter of my journey comes to a pause here',width/6,height/2-15)
+text('   Yet, please do not forget to carry your memories with you as you walk toward a future beyond',width/6,height/2+15)
+text('                            We all need memories to lift us forward',width/6,height/2+45)
+  pop()
+}
 dis=dist(mouseX,mouseY,width/4,height/3)
 dis2=dist(mouseX,mouseY,width/2,height/6)
 dis3=dist(mouseX,mouseY,4*width/7,5*height/6)
@@ -414,7 +451,7 @@ if(trigger===7){
   noStroke()
   rect(0,0,width,height)
 
-
+image(cha,width*0.9,height-width*0.1,width/10,width/10)
 
 
 push()
@@ -518,8 +555,8 @@ pop()
   
 push()
 fill(255,150)
-textSize(16)
-text('click and type to leave your letter...',width/15,height/15)
+textSize(26)
+text('press the mouse to decide the position and type to leave your letter...',width/15,height/18)
 pop()
 
 
@@ -532,6 +569,20 @@ pop()
   
   for(let i=0;i<zuobiao.length;i+=2){
     text(info[i/2],zuobiao[i],zuobiao[i+1])
+
+
+     if(info[i/2]===''||info[i/2]===' '||info[i/2]==='  '){
+   
+    }
+    else{
+      push()
+      fill(255,100)
+      stroke(255,100)
+      strokeWeight(1)
+       text(emoji[i/2], zuobiao[i], zuobiao[i+1] + 30)
+       pop()
+    }
+
   }
   pop()
   push()
@@ -653,7 +704,7 @@ if(tran4>=250){
   tran4=250
 }
 if(tran4=250){
-  tran5+=0.07
+  tran5+=0.1
 }
 if(tran5>=250){
   tran5=250
@@ -1031,8 +1082,9 @@ constructor(){
 this.x=random(0,width)
 this.y=random(0,height)
 this.dia=0
-this.trans=255
-this.trans2=255
+this.trans=100
+this.trans2=100
+this.dist=dist(mouseX,mouseY,this.x,this.y)
 }
 display(){
   noFill()
@@ -1042,16 +1094,48 @@ display(){
   if(this.dia>20){
     circle(this.x,this.y,this.dia-20)
   }
+  
    
+
+
+
 }
 move(){
 this.dia+=0.5
-this.trans-=0.6
-this.trans2-=0.6
+this.trans-=0.2
+this.trans2-=0.2
 }
 }
 
 function mousePressed(){
+
+if(trigger===4){
+  circle1=true
+}
+if(trigger===5){
+  circle2=true
+}
+if(trigger===6){
+  circle3=true
+}
+if(trigger===7){
+  circle4=true
+}
+  
+
+  
+    if(this.dist<this.dia){
+    if(dropis==false){
+      drop.play()
+      drop.setVolume(0.01)
+      dropis=true
+    }
+
+  }
+  else{
+    dropis=false
+  }
+  
   
 if (trigger === 0) {
     isaction = false;
@@ -1178,6 +1262,11 @@ else if(trigger===6){
     
     zuobiao.push(xx)
     zuobiao.push(yy)
+    
+
+     let randomEmoji = textt[floor(random(textt.length))];
+    emoji.push(randomEmoji); 
+
     inputtext=''
     xx=mouseX
     yy=mouseY
@@ -1243,9 +1332,23 @@ class Ball4{
     this.y=Y
   }
   move(){
-    this.dia+=this.speed
-    if(this.dia>90||this.dia<50){
+    
+   
+
+
+
+    if(dis<=100){
+      this.dia+=0.4
+      if(this.dia>90){
+        this.dia=90
+      }
+      
+    }
+    else{
+      this.dia+=this.speed
+       if(this.dia>90||this.dia<50){
       this.speed=-this.speed
+    }
     }
   }
   display(){
@@ -1254,6 +1357,114 @@ class Ball4{
       fill(255,255,255,1.2)
       circle(this.x,this.y,2*i)
     }
+
+
+    
+  }
+}
+class Ball5{
+  
+  constructor(X,Y){
+    this.dia=90
+    this.trans=200
+    this.speed=0.17
+    this.x=X
+    this.y=Y
+  }
+  move(){
+     if(dis2<=100){
+      this.dia+=0.4
+      if(this.dia>90){
+        this.dia=90
+      }
+      
+    }
+    else{
+      this.dia+=this.speed
+       if(this.dia>90||this.dia<50){
+      this.speed=-this.speed
+    }
+    }
+  }
+  display(){
+   
+    for(let i=0;i<this.dia;i+=1){
+      fill(255,255,255,1.2)
+      circle(this.x,this.y,2*i)
+    }
+
+
+    
+  }
+}
+class Ball6{
+  
+  constructor(X,Y){
+    this.dia=90
+    this.trans=200
+    this.speed=0.17
+    this.x=X
+    this.y=Y
+  }
+  move(){
+     if(dis3<=100){
+      this.dia+=0.4
+      if(this.dia>90){
+        this.dia=90
+      }
+      
+    }
+    else{
+      this.dia+=this.speed
+       if(this.dia>90||this.dia<50){
+      this.speed=-this.speed
+    }
+    }
+  }
+  display(){
+   
+    for(let i=0;i<this.dia;i+=1){
+      fill(255,255,255,1.2)
+      circle(this.x,this.y,2*i)
+    }
+
+
+    
+  }
+}
+class Ball7{
+  
+  constructor(X,Y){
+    this.dia=90
+    this.trans=200
+    this.speed=0.17
+    this.x=X
+    this.y=Y
+  }
+  move(){
+     if(dis4<=100){
+      this.dia+=0.4
+      if(this.dia>90){
+        this.dia=90
+      }
+      
+    }
+    else{
+      this.dia+=this.speed
+       if(this.dia>90||this.dia<50){
+      this.speed=-this.speed
+    }
+    }
+  }
+  display(){
+   
+    for(let i=0;i<this.dia;i+=1){
+      fill(255,255,255,1.2)
+      circle(this.x,this.y,2*i)
+    }
+
+
+    
   }
 }
 
