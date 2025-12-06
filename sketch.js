@@ -571,7 +571,7 @@ pop()
     text(info[i/2],zuobiao[i],zuobiao[i+1])
 
 
-     if(info[i/2]===''||info[i/2]===' '||info[i/2]==='  '){
+     if(info[i/2]===''||info[i/2]===' '||info[i/2]==='   '){
    
     }
     else{
